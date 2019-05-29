@@ -1,0 +1,22 @@
+{
+    "name": "tolidano/commandox",
+    "description": "PHP CLI Inspired by Commando",
+    "homepage": "http://github.com/tolidano/commandox",
+    "license": "MIT",
+    "keywords": ["cli", "command line", "command", "command line interface", "scripting", "automation"],
+    "authors": [
+        {
+            "name": "Shawn Tolidano",
+            "email": "shawn@tolidano.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.2",
+        "kevinlebrun/colors.php": "1.0.*"
+
+    },
+    "version": "0.5.0",
+    "autoload": {
+        "psr-0": {"CommandoX": "src/"}
+    }
+}

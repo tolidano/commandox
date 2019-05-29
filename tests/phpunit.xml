@@ -1,0 +1,13 @@
+<phpunit>
+    <testsuite name="CommandoX">
+        <directory suffix=".php">.</directory>
+    </testsuite>
+    <filter>
+        <whitelist>
+            <directory suffix=".php">../src</directory>
+        </whitelist>
+    </filter>
+    <logging>
+        <log type="coverage-text" target="php://stdout" showUncoveredFiles="false"/>
+    </logging>
+</phpunit>
