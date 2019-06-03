@@ -105,7 +105,7 @@ Things to note:
 
 ## Automatic Help
 
-CommandoX has automatic `--help` support built in.  Calling your script with this flag will print out a help page based on your option definitions and CommandoX settings.  If you define an option with the name or alias of 'help', it will override this built in support.
+CommandoX has automatic `-h/--help` support built in.  Calling your script with this flag (either `-h` or `--help`) will print out a help page based on your option definitions and CommandoX settings.  If you define an option with the name or alias of `h` or `help`, it will override this built in support.
 
 ![help screenshot](http://cl.ly/image/1y3i2m2h220u/Screen%20Shot%202012-08-19%20at%208.54.49%20PM.png)
 
