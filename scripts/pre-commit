@@ -147,8 +147,8 @@ function message_info() {
 # Exit 0 if no errors found
 # Exit 1 if errors were found
 
-# Create empty errors array.
-declare -a errors
+# Create empty errors string.
+declare errors=""
 
 # Fetch all changed php files and validate them.
 # This will check only staged files to be commited.
@@ -196,7 +196,7 @@ if [ -n "$files" ]; then
             message_failure "$php_lint_output"
 
             # Adding error message.
-            errors=("${errors[@]}" "$php_lint_output")
+            errors="${errors}${php_lint_output}"
 
             php_lint_errors=true
         fi
@@ -265,7 +265,7 @@ if [ -n "$files" ]; then
             # File had some issues but they were automatically fixed.
             echo "${color_bold_green}Codestyle errors were fixed automatically! add those changes and commit again.${color_reset}"
             # Display PHPCBF filtered output.
-            echo "$phpcbf_output"
+            echo "${phpcbf_output}"
         fi
 
         # Run PHP Code Style Check and detect in the fixer was not able to fix code.
@@ -278,16 +278,17 @@ if [ -n "$files" ]; then
 
             # Display error and PHPCS filtered output.
             # Display processing file error.
-            echo "$phpcs_codestyle_errors"
+            echo "${phpcs_codestyle_errors}"
 
             # Adding error message.
-            errors=("${errors[@]}" "$output")
+            errors="${errors}${phpcs_codestyle_errors}"
+
 
             phpcs_errors=true
         fi
     done
 
-    if [ "$phpcs_errors" = false ]; then
+    if [ "$phpcs_codestyle_errors" = false ]; then
         message_success 'No Errors Found - PHP CodeSniffer + PHP Code Beautifier'
     fi
 
@@ -321,10 +322,10 @@ if [ -n "$files" ]; then
         echo
         message_failure "PHPMD - PHP Mess Detector found some errors. Fix the errors before committing."
 
-        echo "$phpmd_output"
+        echo "${phpmd_output}"
 
         # Adding error message.
-        errors=("${errors[@]}" "$phpmd_output")
+        errors="${errors}${phpmd_output}"
     else
         echo
         message_success "✔ No PHPMD errors found!"
@@ -364,7 +365,7 @@ if [ -n "$files" ]; then
         echo "$phpcpd_output"
 
         # Adding error message.
-        errors=("${errors[@]}" "$phpcpd_output")
+        errors="${errors}${phpcpd_output}"
     else
         echo
         message_success "✔ No PHPCPD errors found!"

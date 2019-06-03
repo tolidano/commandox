@@ -46,29 +46,29 @@ class Option
 {
     private $aliases = []; /* aliases for this argument */
     private $boolean = false; /* bool */
-    private $default; /* mixed default value for this option when no value is specified */
+    private $default = null; /* mixed default value for this option when no value is specified */
     private $description; /* string */
     private $file = false; /* bool */
-    private $fileRequireExists; /* bool require that the file path is valid */
-    private $fileAllowGlobbing; /* bool allow globbing for files */
+    private $fileRequireExists = true; /* bool require that the file path is valid */
+    private $fileAllowGlobbing = true; /* bool allow globbing for files */
     private $increment = false; /* bool */
-    private $map; /* closure */
+    private $map = null; /* closure */
     private $maxValue = 0; /* int max value for increment */
-    private $name; /* string optional name of argument */
+    private $name = null; /* string optional name of argument */
     private $needs = []; /* set of other required options for this option */
     private $required = false; /* bool */
-    private $rule; /* closure */
-    private $title; /* a formal way to reference this argument */
+    private $rule = null; /* closure */
+    private $title = null; /* a formal way to reference this argument */
     private $type = 0; /* int see constants */
     private $value = null; /* mixed */
 
     public const TYPE_SHORT = 1;
     public const TYPE_VERBOSE = 2;
-    public const TYPE_NAMED = 3; // 1|2, both are named
+    public const TYPE_NAMED = 3; // 1|2
     public const TYPE_ANONYMOUS = 4;
 
     /**
-     * @param  string|int $name single char name or int index for this option
+     * @param string|int $name single char name or int index for this option
      * @return Option
      * @throws \Exception
      */
@@ -89,7 +89,7 @@ class Option
     /**
      * Add an alias for this option
      *
-     * @param  string $alias
+     * @param string $alias
      * @return Option
      */
     public function addAlias(string $alias): Option
@@ -101,7 +101,7 @@ class Option
     /**
      * Add a description for this option
      *
-     * @param  string $description
+     * @param string $description
      * @return Option
      */
     public function setDescription(string $description): Option
@@ -113,7 +113,7 @@ class Option
     /**
      * Set whether this option is a boolean flag
      *
-     * @param  bool $bool
+     * @param bool $bool
      * @return Option
      */
     public function setBoolean(bool $bool = true): Option
@@ -129,7 +129,7 @@ class Option
     /**
      * Set the maximum increment value for this flag (-vvvv)
      *
-     * @param  int $max
+     * @param int $max
      * @return Option
      */
     public function setIncrement(int $max = 0): Option
@@ -151,8 +151,8 @@ class Option
      * supports file globbing and returns an array of matching
      * files.
      *
-     * @param  bool $requireExists
-     * @param  bool $allowGlobbing
+     * @param bool $requireExists
+     * @param bool $allowGlobbing
      * @throws \Exception if the file does not exists
      * @return Option
      */
@@ -167,7 +167,7 @@ class Option
     /**
      * Set the title of this option
      *
-     * @param  string $title
+     * @param string $title
      * @return Option
      */
     public function setTitle(string $title): Option
@@ -179,7 +179,7 @@ class Option
     /**
      * Set whether this option is required
      *
-     * @param  bool $bool required?
+     * @param bool $bool required?
      * @return Option
      */
     public function setRequired(bool $bool = true): Option
@@ -191,7 +191,7 @@ class Option
     /**
      * Set an option as required
      *
-     * @param  string $option Option name
+     * @param string $option Option name
      * @return Option
      */
     public function setNeeds(string $option): Option
@@ -209,7 +209,7 @@ class Option
      * Set the default value of this option
      * Immediately attempts to set the default value as the value
      *
-     * @param  mixed $value default value
+     * @param mixed $value default value
      * @return Option
      */
     public function setDefault(/* mixed */ $value): Option
@@ -228,7 +228,7 @@ class Option
     }
 
     /**
-     * @param  \Closure|string $rule regex, closure
+     * @param \Closure|string $rule regex, closure
      * @return Option
      */
     public function setRule(/* mixed */ $rule): Option
@@ -238,7 +238,7 @@ class Option
     }
 
     /**
-     * @param  \Closure $map
+     * @param \Closure $map
      * @return Option
      */
     public function setMap(\Closure $map): Option
@@ -248,7 +248,7 @@ class Option
     }
 
     /**
-     * @param  \Closure|string $value regex, closure
+     * @param \Closure|string $value regex, closure
      * @return mixed
      */
     public function map(/* mixed */ $value)
@@ -267,7 +267,7 @@ class Option
     /**
      * Validate the supplied value against the rule
      *
-     * @param  mixed $value
+     * @param mixed $value
      * @return bool
      */
     public function validate(/* mixed */ $value): bool
@@ -285,7 +285,7 @@ class Option
     /**
      * Parse a file path from a file argument
      *
-     * @param  string $filePath
+     * @param string $filePath
      * @return array single element array of full file path
      *      or an array of file paths if "globbing" is supported
      */
@@ -297,12 +297,9 @@ class Option
             if (empty($files)) {
                 return $files;
             }
-            return array_map(
-                function ($file) {
-                    return realpath($file);
-                },
-                $files
-            );
+            return array_map(function ($file) {
+                return realpath($file);
+            }, $files);
         }
 
         return [$path];
@@ -393,7 +390,7 @@ class Option
     /**
      * Check to see if requirements list for option are met
      *
-     * @param  array $optionsList Set of current options defined
+     * @param array $optionsList Set of current options defined
      * @return boolean|array True if requirements met, array if not found
      */
     public function hasNeeds(array $optionsList)
@@ -417,7 +414,7 @@ class Option
     }
 
     /**
-     * @param  mixed $value for this option (set on the command line)
+     * @param mixed $value for this option (set on the command line)
      * @throws \Exception
      */
     public function setValue($value)
