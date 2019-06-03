@@ -462,7 +462,7 @@ class Option
                     $help .= (mb_strlen($alias, 'UTF-8') === 1 ? '/-' : '/--') . $alias;
                 }
             }
-            if (!$this->isBoolean()) {
+            if (!$this->isBoolean() && !$this->isIncrement()) {
                 $help .= ' ' . $color->underline('<argument>');
             }
             $help .= PHP_EOL;
