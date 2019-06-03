@@ -247,7 +247,7 @@ The value specified for this option must be a valid file path. When used, relati
 
 CommandoX encourages pull requests.  When submitting a pull request:
 
- - Target the `dev` branch (not `master`)
+ - Target the `master` branch (not `dev`, a target cut for composer bravehearts)
  - Follow the [PSR-1](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-1-basic-coding-standard.md) and [PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md) coding standards
  - Add appropriate test coverage for your changes (coverage must remain over 90%)
  - Run all unit tests in the test directory via `phpunit ./tests` (install phpunit globally with composer)
