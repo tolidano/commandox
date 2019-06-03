@@ -56,25 +56,24 @@ namespace CommandoX;
 
 class Command implements \ArrayAccess, \Iterator
 {
-    private const OPTION_TYPE_ARGUMENT  = 1; // e.g. foo
-    private const OPTION_TYPE_SHORT     = 2; // e.g. -u
-    private const OPTION_TYPE_VERBOSE   = 4; // e.g. --username
+    private const OPTION_TYPE_ARGUMENT = 1; // e.g. foo
+    private const OPTION_TYPE_SHORT = 2; // e.g. -u
+    private const OPTION_TYPE_VERBOSE = 4; // e.g. --username
 
-    private
-        $addedHelp                  = false,
-        $arguments                  = [],
-        $currentOption              = null,
-        $errorBeep                  = true,
-        $errorTrap                  = true,
-        $help                       = null,
-        $name                       = null,
-        $namelessOptionCounter      = 0,
-        $parsed                     = false,
-        $position                   = 0,
-        $sortedKeys                 = [],
-        $tokens                     = [],
-        $defaultHelp                = true,
-        $showedHelp                 = false;
+    private $addedHelp = false;
+    private $arguments = [];
+    private $currentOption = null;
+    private $errorBeep = true;
+    private $errorTrap = true;
+    private $help = null;
+    private $name = null;
+    private $namelessOptionCounter = 0;
+    private $parsed = false;
+    private $position = 0;
+    private $sortedKeys = [];
+    private $tokens = [];
+    private $defaultHelp = true;
+    private $showedHelp = false;
 
     /**
      * @var Option[]
@@ -209,19 +208,20 @@ class Command implements \ArrayAccess, \Iterator
      * @param Option|null $option
      * @param string|int $name
      * @return Option
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     private function _option(?Option $option, string $name = null)
     {
         // Is this a previously declared option?
         if (isset($name) && !empty($this->options[$name])) {
             $this->currentOption = $this->getOption($name);
-        } else {
-            if (!isset($name)) {
-                $name = $this->namelessOptionCounter++;
-            }
-            $this->currentOption = $this->options[$name] = new Option($name);
+            return $this->currentOption;
         }
-
+        if (!isset($name)) {
+            $name = $this->namelessOptionCounter++;
+        }
+        $this->currentOption = $this->options[$name] = new Option($name);
         return $this->currentOption;
     }
 
@@ -233,6 +233,8 @@ class Command implements \ArrayAccess, \Iterator
      *
      * @throws \Exception
      * @return Option
+     *
+     * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
      */
     private function _flag(?Option $option, string $name): Option
     {
@@ -250,6 +252,8 @@ class Command implements \ArrayAccess, \Iterator
      *
      * @throws \Exception
      * @return Option
+     *
+     * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
      */
     private function _argument(?Option $option, ?int $index = null): Option
     {
@@ -265,6 +269,8 @@ class Command implements \ArrayAccess, \Iterator
      * @param Option $option
      * @param bool $boolean [optional]
      * @return Option
+     *
+     * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
      */
     private function _boolean(Option $option, bool $boolean = true): Option
     {
@@ -277,6 +283,8 @@ class Command implements \ArrayAccess, \Iterator
      * @param Option $option
      * @param bool $require [optional]
      * @return Option
+     *
+     * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
      */
     private function _require(Option $option, bool $require = true): Option
     {
@@ -289,6 +297,8 @@ class Command implements \ArrayAccess, \Iterator
      * @param Option $option Current option
      * @param string $name Name of option
      * @return Option instance
+     *
+     * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
      */
     private function _needs(Option $option, string $name): Option
     {
@@ -301,6 +311,8 @@ class Command implements \ArrayAccess, \Iterator
      * @param Option $option
      * @param string $alias
      * @return Option
+     *
+     * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
      */
     private function _alias(Option $option, string $alias): Option
     {
@@ -314,6 +326,8 @@ class Command implements \ArrayAccess, \Iterator
      * @param Option $option
      * @param string $description
      * @return Option
+     *
+     * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
      */
     private function _describe(Option $option, string $description): Option
     {
@@ -326,6 +340,8 @@ class Command implements \ArrayAccess, \Iterator
      * @param Option $option
      * @param string $title
      * @return Option
+     *
+     * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
      */
     private function _title(Option $option, string $title): Option
     {
@@ -338,6 +354,8 @@ class Command implements \ArrayAccess, \Iterator
      * @param Option $option
      * @param \Closure $callback (string $value) -> boolean
      * @return Option
+     *
+     * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
      */
     private function _must(Option $option, \Closure $callback): Option
     {
@@ -350,6 +368,8 @@ class Command implements \ArrayAccess, \Iterator
      * @param Option $option
      * @param \Closure $callback
      * @return Option
+     *
+     * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
      */
     private function _map(Option $option, \Closure $callback): Option
     {
@@ -363,6 +383,8 @@ class Command implements \ArrayAccess, \Iterator
      * @param Option $option
      * @param int $max
      * @return Option
+     *
+     * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
      */
     private function _increment(Option $option, int $max = 0): Option
     {
@@ -376,6 +398,8 @@ class Command implements \ArrayAccess, \Iterator
      * @param $option Option
      * @param mixed $value
      * @return Option
+     *
+     * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
      */
     private function _default(Option $option, /* mixed */ $value): Option
     {
@@ -387,6 +411,8 @@ class Command implements \ArrayAccess, \Iterator
      * @param bool   $require_exists
      * @param bool   $allow_globbing
      * @return Option
+     *
+     * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
      */
     private function _file(Option $option, bool $requireExists = true, bool $allowGlobbing = false): Option
     {
@@ -455,14 +481,13 @@ class Command implements \ArrayAccess, \Iterator
                 list($name, $type) = $this->_parseOption($token);
                 // We allow short groups
                 if (strlen($name) > 1 && $type === self::OPTION_TYPE_SHORT) {
-
                     $group = str_split($name);
                     // correct option name
                     $name = array_shift($group);
 
                     // Iterate in reverse order to keep the option order correct
                     // options that don't require an argument can be mixed.
-                    foreach(array_reverse($group) as $nextShort) {
+                    foreach (array_reverse($group) as $nextShort) {
                         // put it back into $tokens for another loop
                         array_unshift($tokens, "-{$nextShort}");
                     }
@@ -500,8 +525,9 @@ class Command implements \ArrayAccess, \Iterator
                         // the next token MUST be an "argument" and not another flag/option
                         $token = array_shift($tokens);
                         list($val, $type) = $this->_parseOption($token);
-                        if ($type !== self::OPTION_TYPE_ARGUMENT)
+                        if ($type !== self::OPTION_TYPE_ARGUMENT) {
                             throw new \Exception(sprintf('Unable to parse option %s: Expected an argument', $token));
+                        }
                         $keyvals[$name] = $val;
                     }
                 }
@@ -515,9 +541,12 @@ class Command implements \ArrayAccess, \Iterator
             // TODO protect against duplicates caused by aliases
             foreach ($this->options as $option) {
                 if (is_null($option->getValue()) && $option->isRequired()) {
-                    throw new \Exception(sprintf('Required %s %s must be specified',
+                    throw new \Exception(sprintf(
+                        'Required %s %s must be specified',
                         $option->getType() & Option::TYPE_NAMED ?
-                            'option' : 'argument', $option->getName()));
+                        'option' : 'argument',
+                        $option->getName()
+                    ));
                 }
             }
 
@@ -535,7 +564,7 @@ class Command implements \ArrayAccess, \Iterator
             // done here to allow for flags/arguments added
             // at run time. Acceptable because option values are
             // not mutable after parsing.
-            foreach($this->options as $k => $v) {
+            foreach ($this->options as $k => $v) {
                 if (is_numeric($k)) {
                     $this->arguments[$k] = $v;
                 } else {
@@ -546,8 +575,8 @@ class Command implements \ArrayAccess, \Iterator
             // Used in the \Iterator implementation
             $this->sortedKeys = array_keys($this->options);
             natsort($this->sortedKeys);
-        } catch(\Exception $e) {
-            return $this->error($e);
+        } catch (\Exception $exception) {
+            return $this->error($exception);
         }
         return 0;
     }
@@ -559,18 +588,18 @@ class Command implements \ArrayAccess, \Iterator
      * @throws \Exception
      * @return int exit code
      */
-    public function error(\Exception $e): int
+    public function error(\Exception $exception): int
     {
         if ($this->errorBeep === true) {
             \CommandoX\Util\Terminal::beep();
         }
 
         if ($this->errorTrap !== true) {
-            throw $e;
+            throw $exception;
         }
 
         $color = new \Colors\Color();
-        $error = sprintf('Error: %s ', $e->getMessage());
+        $error = sprintf('Error: %s ', $exception->getMessage());
         echo $color($error)->bg('red')->bold()->white() . PHP_EOL;
         return 1;
     }
@@ -659,7 +688,7 @@ class Command implements \ArrayAccess, \Iterator
     public function getArgumentValues(): array
     {
         $this->parseIfNotParsed();
-        return array_map(function(Option $argument) {
+        return array_map(function (Option $argument) {
             return $argument->getValue();
         }, $this->arguments);
     }
@@ -673,7 +702,7 @@ class Command implements \ArrayAccess, \Iterator
     public function getFlagValues(): array
     {
         $this->parseIfNotParsed();
-        return array_map(function(Option $flag) {
+        return array_map(function (Option $flag) {
             return $flag->getValue();
         }, $this->dedupeFlags());
     }
@@ -872,7 +901,7 @@ class Command implements \ArrayAccess, \Iterator
      */
     public function offsetSet($offset, $value)
     {
-        throw new \Exception('Setting an option value via array syntax is not permitted');
+        throw new \Exception("Setting an option $offset to value $value via array syntax is not permitted");
     }
 
     /**

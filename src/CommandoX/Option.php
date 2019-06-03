@@ -5,6 +5,7 @@
  */
 
 namespace CommandoX;
+
 use \CommandoX\Util\Terminal;
 
 /**
@@ -43,29 +44,28 @@ use \CommandoX\Util\Terminal;
 
 class Option
 {
-    private
-        $aliases = [], /* aliases for this argument */
-        $boolean = false, /* bool */
-        $default, /* mixed default value for this option when no value is specified */
-        $description, /* string */
-        $file = false, /* bool */
-        $fileRequireExists, /* bool require that the file path is valid */
-        $fileAllowGlobbing, /* bool allow globbing for files */
-        $increment = false, /* bool */
-        $map, /* closure */
-        $maxValue = 0, /* int max value for increment */
-        $name, /* string optional name of argument */
-        $needs = [], /* set of other required options for this option */
-        $required = false, /* bool */
-        $rule, /* closure */
-        $title, /* a formal way to reference this argument */
-        $type = 0, /* int see constants */
-        $value = null; /* mixed */
+    private $aliases = []; /* aliases for this argument */
+    private $boolean = false; /* bool */
+    private $default = null; /* mixed default value for this option when no value is specified */
+    private $description; /* string */
+    private $file = false; /* bool */
+    private $fileRequireExists = true; /* bool require that the file path is valid */
+    private $fileAllowGlobbing = true; /* bool allow globbing for files */
+    private $increment = false; /* bool */
+    private $map = null; /* closure */
+    private $maxValue = 0; /* int max value for increment */
+    private $name = null; /* string optional name of argument */
+    private $needs = []; /* set of other required options for this option */
+    private $required = false; /* bool */
+    private $rule = null; /* closure */
+    private $title = null; /* a formal way to reference this argument */
+    private $type = 0; /* int see constants */
+    private $value = null; /* mixed */
 
-    public const TYPE_SHORT        = 1;
-    public const TYPE_VERBOSE      = 2;
-    public const TYPE_NAMED        = 3; // 1|2
-    public const TYPE_ANONYMOUS    = 4;
+    public const TYPE_SHORT = 1;
+    public const TYPE_VERBOSE = 2;
+    public const TYPE_NAMED = 3; // 1|2
+    public const TYPE_ANONYMOUS = 4;
 
     /**
      * @param string|int $name single char name or int index for this option
@@ -253,8 +253,9 @@ class Option
      */
     public function map(/* mixed */ $value)
     {
-        if (!is_callable($this->map))
+        if (!is_callable($this->map)) {
             return $value;
+        }
 
         // TODO add int, float and regex special case
 
@@ -271,8 +272,9 @@ class Option
      */
     public function validate(/* mixed */ $value): bool
     {
-        if (!is_callable($this->rule))
+        if (!is_callable($this->rule)) {
             return true;
+        }
 
         // TODO add int, float and regex special case
 
@@ -295,7 +297,7 @@ class Option
             if (empty($files)) {
                 return $files;
             }
-            return array_map(function($file) {
+            return array_map(function ($file) {
                 return realpath($file);
             }, $files);
         }
@@ -456,7 +458,7 @@ class Option
             $help =  PHP_EOL . (mb_strlen($this->name, 'UTF-8') === 1 ?
                 '-' : '--') . $this->name;
             if (!empty($this->aliases)) {
-                foreach($this->aliases as $alias) {
+                foreach ($this->aliases as $alias) {
                     $help .= (mb_strlen($alias, 'UTF-8') === 1 ? '/-' : '/--') . $alias;
                 }
             }
@@ -493,7 +495,7 @@ class Option
 
         if (!empty($description)) {
             $descriptionArray = explode(PHP_EOL, trim($description));
-            foreach($descriptionArray as $descriptionLine){
+            foreach ($descriptionArray as $descriptionLine) {
                 $help .= Terminal::wrap($descriptionLine, 5, 1) . PHP_EOL;
             }
         }

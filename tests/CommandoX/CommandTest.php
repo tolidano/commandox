@@ -7,8 +7,9 @@ use CommandoX\Command;
 require_once dirname(dirname(__DIR__)) . '/vendor/autoload.php';
 
 // PHPUnit version hack https://stackoverflow.com/questions/6065730/why-fatal-error-class-phpunit-framework-testcase-not-found-in
-if (!class_exists('\PHPUnit_Framework_TestCase') && class_exists('\PHPUnit\Framework\TestCase'))
+if (!class_exists('\PHPUnit_Framework_TestCase') && class_exists('\PHPUnit\Framework\TestCase')) {
     class_alias('\PHPUnit\Framework\TestCase', '\PHPUnit_Framework_TestCase');
+}
 
 class CommandTest extends \PHPUnit_Framework_TestCase
 {
@@ -207,8 +208,8 @@ class CommandTest extends \PHPUnit_Framework_TestCase
 
         $cmd->trapErrors(false)
             ->beepOnError(false);
-        $cmd->option('a')
-            ->needs('b');
+        $cmd->option('b');
+        $cmd->option('a')->needs('b');
     }
 
     /**
@@ -220,10 +221,10 @@ class CommandTest extends \PHPUnit_Framework_TestCase
     {
         $tokens = ['filename', 'test'];
         $cmd = new Command($tokens);
-        $cmd->option()->referToAs('abc')->must(function($value) {
+        $cmd->option()->referToAs('abc')->must(function ($value) {
             $valid = ['test'];
             return in_array($value, $valid);
-        })->map(function($value) {
+        })->map(function ($value) {
             $map = ['test' => 'tset'];
             if (array_key_exists($value, $map)) {
                 $value = $map[$value];
@@ -300,7 +301,7 @@ class CommandTest extends \PHPUnit_Framework_TestCase
     {
         $tokens = ['filename', 'test', 'test2'];
         $cmd = new Command($tokens);
-        $value = $cmd[0];
+        $cmd[0];
         $cmd->rewind();
         $cmd->next();
         $val = $cmd->current();
