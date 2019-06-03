@@ -164,11 +164,11 @@ class Command implements \ArrayAccess, \Iterator
      * Factory style for builders
      *
      * @param array $tokens
-     * @return Command
+     * @return Command or subclass of Command
      */
     public static function define($tokens = null)
     {
-        return new Command($tokens);
+        return new static($tokens);
     }
 
     /**

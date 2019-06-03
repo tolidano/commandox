@@ -10,9 +10,26 @@ require_once dirname(dirname(__DIR__)) . '/vendor/autoload.php';
 if (!class_exists('\PHPUnit_Framework_TestCase') && class_exists('\PHPUnit\Framework\TestCase'))
     class_alias('\PHPUnit\Framework\TestCase', '\PHPUnit_Framework_TestCase');
 
+class SubclassCommand extends Command {}
+
 class CommandTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * Ensure subclasses of Command work properly with define()
+     *
+     * @test
+     */
+    public function testWhenCommandExtendedThenSubclassReturned()
+    {
+        $cmd = SubclassCommand::define(['filename']);
+        $this->assertInstanceOf('CommandoX\Test\SubclassCommand', $cmd);
+    }
 
+    /**
+     * Test anonymous arguments
+     *
+     * @test
+     */
     public function testCommandoXAnon()
     {
         $tokens = ['filename', 'arg1', 'arg2', 'arg3'];
@@ -20,6 +37,11 @@ class CommandTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($tokens[1], $cmd[0]);
     }
 
+    /**
+     * Test named flags
+     *
+     * @test
+     */
     public function testCommandoXFlag()
     {
         // Single flag
