@@ -284,6 +284,11 @@ class CommandTest extends \PHPUnit_Framework_TestCase
         $cmd = new Command($tokens);
         $cmd->parse();
         $this->assertTrue($cmd->didShowHelp());
+
+        $tokens = ['filename', '-h'];
+        $cmd = new Command($tokens);
+        $cmd->parse();
+        $this->assertTrue($cmd->didShowHelp());
     }
 
     /**
