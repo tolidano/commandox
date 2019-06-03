@@ -52,6 +52,7 @@ class Terminal
      * tput does not return the expected values.  As a result, to prevent tput
      * from writing to stderr, we first check the exit code and call it again
      * to get the actual value.
+     * If we detect windows or cannot detect tpu, return the default
      *
      * @param  int    $default
      * @param  string $param
@@ -59,6 +60,13 @@ class Terminal
      */
     private static function tput($default, $param = 'cols'): int
     {
+        $phpOs = strtolower(substr(PHP_OS, 0, 3));
+        $envOs = getenv('OS');
+        if ($phpOs === 'win' ||
+            ($envOs && strpos(strtolower($envOs), 'windows')) ||
+            empty(trim(shell_exec('which tput')))) {
+    		return $default;
+        }
         $test = exec('tput ' . $param . ' 2>/dev/null');
         if (empty($test)) {
             return $default;
