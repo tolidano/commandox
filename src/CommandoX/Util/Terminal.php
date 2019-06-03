@@ -16,7 +16,7 @@ class Terminal
      * default value of $default.  On Windows, will always fall back
      * to default.
      *
-     * @param int $default
+     * @param  int $default
      * @return int
      */
     public static function getWidth($default = 80): int
@@ -26,9 +26,10 @@ class Terminal
 
     /**
      * Height of current terminal window
+     *
      * @see getWidth
      *
-     * @param int $default
+     * @param  int $default
      * @return int
      */
     public static function getHeight($default = 32): int
@@ -52,8 +53,8 @@ class Terminal
      * from writing to stderr, we first check the exit code and call it again
      * to get the actual value.
      *
-     * @param int $default
-     * @param string $param
+     * @param  int    $default
+     * @param  string $param
      * @return int
      */
     private static function tput($default, $param = 'cols'): int
@@ -69,28 +70,31 @@ class Terminal
     /**
      * Wrap text for printing
      *
-     * @param string $text
-     * @param int $left_margin
-     * @param int $right_margin
-     * @param ?int $width attempts to use current terminal width by default
+     * @param  string $text
+     * @param  int    $leftMargin
+     * @param  int    $rightMargin
+     * @param  ?int   $width        attempts to use current terminal width by default
      * @return string
      */
-    public static function wrap(string $text, int $left_margin = 0, int $right_margin = 0,
-        ?int $width = null): string
-    {
+    public static function wrap(
+        string $text,
+        int $leftMargin = 0,
+        int $rightMargin = 0,
+        ?int $width = null
+    ): string {
         if (empty($width)) {
             $width = self::getWidth();
         }
-        $width = $width - abs($left_margin) - abs($right_margin);
-        $margin = str_repeat(' ', $left_margin);
+        $width = $width - abs($leftMargin) - abs($rightMargin);
+        $margin = str_repeat(' ', $leftMargin);
         return $margin . wordwrap($text, $width, PHP_EOL . $margin);
     }
 
     /**
      * Header for various text output
      *
-     * @param string $text
-     * @param int $width defaults to terminal width
+     * @param  string $text
+     * @param  int    $width defaults to terminal width
      * @return string
      */
     public static function header(string $text, ?int $width = null): string
@@ -111,9 +115,12 @@ class Terminal
      *
      * @return string
      */
-    public static function pad(string $text, int $width, string $pad = ' ',
-        int $mode = STR_PAD_RIGHT): string
-    {
+    public static function pad(
+        string $text,
+        int $width,
+        string $pad = ' ',
+        int $mode = STR_PAD_RIGHT
+    ): string {
         $width = strlen($text) - mb_strlen($text, 'UTF-8') + $width;
         return str_pad($text, $width, $pad, $mode);
     }

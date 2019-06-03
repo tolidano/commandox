@@ -253,6 +253,7 @@ CommandoX encourages pull requests.  When submitting a pull request:
  - Run all unit tests in the test directory via `phpunit ./tests` (install phpunit globally with composer)
  - Include commenting where appropriate
  - Add a descriptive message, preferably referencing a GitHub issue
+ - Install the pre-commit hook (`./scripts/installHook.sh` to automatically check your code)
 
 ## Inspiration / Original
 
