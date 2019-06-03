@@ -65,7 +65,7 @@ class Terminal
         if ($phpOs === 'win' ||
             ($envOs && strpos(strtolower($envOs), 'windows')) ||
             empty(trim(shell_exec('which tput')))) {
-    		return $default;
+            return $default;
         }
         $test = exec('tput ' . $param . ' 2>/dev/null');
         if (empty($test)) {
