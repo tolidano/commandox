@@ -5,13 +5,12 @@ namespace CommandoX\Test;
 use CommandoX\Command;
 
 require_once dirname(dirname(__DIR__)) . '/vendor/autoload.php';
+require_once 'SubclassCommand.php';
 
 // PHPUnit version hack https://stackoverflow.com/questions/6065730/why-fatal-error-class-phpunit-framework-testcase-not-found-in
 if (!class_exists('\PHPUnit_Framework_TestCase') && class_exists('\PHPUnit\Framework\TestCase')) {
     class_alias('\PHPUnit\Framework\TestCase', '\PHPUnit_Framework_TestCase');
 }
-
-class SubclassCommand extends Command {}
 
 class CommandTest extends \PHPUnit_Framework_TestCase
 {
@@ -285,6 +284,11 @@ class CommandTest extends \PHPUnit_Framework_TestCase
         $cmd = new Command($tokens);
         $cmd->parse();
         $this->assertTrue($cmd->didShowHelp());
+
+        $tokens = ['filename', '-h'];
+        $cmd = new Command($tokens);
+        $cmd->parse();
+        $this->assertTrue($cmd->didShowHelp());
     }
 
     /**
@@ -325,11 +329,12 @@ class CommandTest extends \PHPUnit_Framework_TestCase
         $cmd = new Command($tokens);
         $cmd[0];
         $cmd->rewind();
-        $cmd->next();
+        $cmd->next(); //skip -h
+        $cmd->next(); //skip --help
         $val = $cmd->current();
         $key = $cmd->key();
         $this->assertEquals('test', $val);
-        $this->assertEquals(1, $key);
+        $this->assertEquals(2, $key);
     }
 
     /**

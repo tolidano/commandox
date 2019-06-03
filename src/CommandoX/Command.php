@@ -506,8 +506,8 @@ class Command implements \ArrayAccess, \Iterator
 
                     $count++;
                 } else {
-                    // Short circuit if the help flag was set and we're using default help
-                    if ($this->defaultHelp === true && $name === 'help') {
+                    // Short circuit if a valid help flag was set and we're using default help
+                    if ($this->defaultHelp === true && ($name === 'help' || $name === 'h')) {
                         $this->printHelp();
                         return 0;
                     }
@@ -851,15 +851,16 @@ class Command implements \ArrayAccess, \Iterator
     }
 
     /**
-     * If defaultHelp is true, attach the --help option
+     * If defaultHelp is true, attach the -h/--help option
      *
      * @return void
      */
     private function attachHelp()
     {
         if ($this->defaultHelp && !$this->addedHelp) {
-            // Add in a default help method
-            $this->option('help')
+            // Add in a default help method and help flag
+            $this->option('h')
+                ->aka('help')
                 ->describe('Show the help page for this command.')
                 ->boolean();
             $this->addedHelp = true;
