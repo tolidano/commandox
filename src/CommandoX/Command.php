@@ -608,11 +608,12 @@ class Command implements \ArrayAccess, \Iterator
      * @param string $message
      * @return string
      */
-    public function createTerminalError(string $message){
+    public function createTerminalError(string $message)
+    {
         $color = new \Colors\Color();
         $error = sprintf('ERROR: %s ', $message);
         return $color($error)->bg('red')->bold()->white();
-      }
+    }
 
     /**
      * Has this Command instance parsed its arguments?
