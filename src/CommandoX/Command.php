@@ -598,11 +598,21 @@ class Command implements \ArrayAccess, \Iterator
             throw $exception;
         }
 
-        $color = new \Colors\Color();
-        $error = sprintf('Error: %s ', $exception->getMessage());
-        echo $color($error)->bg('red')->bold()->white() . PHP_EOL;
+        echo $this->createTerminalError($exception->getMessage()) . PHP_EOL;
         return 1;
     }
+
+    /**
+     * Format an error message for the terminal consistently
+     *
+     * @param string $message
+     * @return string
+     */
+    public function createTerminalError(string $message){
+        $color = new \Colors\Color();
+        $error = sprintf('ERROR: %s ', $message);
+        return $color($error)->bg('red')->bold()->white();
+      }
 
     /**
      * Has this Command instance parsed its arguments?
