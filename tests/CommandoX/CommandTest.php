@@ -201,6 +201,11 @@ class CommandTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(['v3', 'v4', 'v5'], $cmd->getArgumentValues());
         $this->assertEquals(['a' => 'v1', 'b' => 'v2'], $cmd->getFlagValues());
+
+        $tokens = ['filename'];
+        $cmd = new Command($tokens);
+        $cmd->argument();
+        $this->assertEmpty($cmd->getArgumentValues());
     }
 
     /**
