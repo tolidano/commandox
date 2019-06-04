@@ -689,7 +689,7 @@ class Command implements \ArrayAccess, \Iterator
     {
         $this->parseIfNotParsed();
 
-        $arguments = array_filter($this->arguments, function(Option $argument){
+        $arguments = array_filter($this->arguments, function (Option $argument) {
             $argumentValue = $argument->getValue();
             return isset($argumentValue);
         });
