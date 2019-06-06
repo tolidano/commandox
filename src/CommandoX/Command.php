@@ -19,6 +19,9 @@
 
 namespace CommandoX;
 
+use CommandoX\Option\TypeEnum;
+use CommandoX\Util\Terminal;
+
 /**
  * Here are all the methods available through __call.
  * For accurate method documentation, see the actual method.
@@ -56,10 +59,6 @@ namespace CommandoX;
 
 class Command implements \ArrayAccess, \Iterator
 {
-    private const OPTION_TYPE_ARGUMENT = 1; // e.g. foo
-    private const OPTION_TYPE_SHORT = 2; // e.g. -u
-    private const OPTION_TYPE_VERBOSE = 4; // e.g. --username
-
     private $addedHelp = false;
     private $arguments = [];
     private $currentOption = null;
@@ -480,7 +479,7 @@ class Command implements \ArrayAccess, \Iterator
 
                 list($name, $type) = $this->_parseOption($token);
                 // We allow short groups
-                if (strlen($name) > 1 && $type === self::OPTION_TYPE_SHORT) {
+                if (strlen($name) > 1 && $type === TypeEnum::SHORT) {
                     $group = str_split($name);
                     // correct option name
                     $name = array_shift($group);
@@ -493,7 +492,7 @@ class Command implements \ArrayAccess, \Iterator
                     }
                 }
 
-                if ($type === self::OPTION_TYPE_ARGUMENT) {
+                if ($type === TypeEnum::ARGUMENT) {
                     // it is an argument, use an int as the index
                     $keyvals[$count] = $name;
 
@@ -525,7 +524,7 @@ class Command implements \ArrayAccess, \Iterator
                         // the next token MUST be an "argument" and not another flag/option
                         $token = array_shift($tokens);
                         list($val, $type) = $this->_parseOption($token);
-                        if ($type !== self::OPTION_TYPE_ARGUMENT) {
+                        if ($type !== TypeEnum::ARGUMENT) {
                             throw new \Exception(sprintf('Unable to parse option %s: Expected an argument', $token));
                         }
                         $keyvals[$name] = $val;
@@ -543,8 +542,7 @@ class Command implements \ArrayAccess, \Iterator
                 if (is_null($option->getValue()) && $option->isRequired()) {
                     throw new \Exception(sprintf(
                         'Required %s %s must be specified',
-                        $option->getType() & Option::TYPE_NAMED ?
-                        'option' : 'argument',
+                        $option->isNamed() ? 'option' : 'argument',
                         $option->getName()
                     ));
                 }
@@ -591,7 +589,7 @@ class Command implements \ArrayAccess, \Iterator
     public function error(\Exception $exception): int
     {
         if ($this->errorBeep === true) {
-            \CommandoX\Util\Terminal::beep();
+            Terminal::beep();
         }
 
         if ($this->errorTrap !== true) {
@@ -640,12 +638,12 @@ class Command implements \ArrayAccess, \Iterator
 
         if (!empty($matches['hyphen'])) {
             $type = (strlen($matches['hyphen']) === 1) ?
-                self::OPTION_TYPE_SHORT:
-                self::OPTION_TYPE_VERBOSE;
+                TypeEnum::SHORT:
+                TypeEnum::LONG;
             return [$matches['name'], $type];
         }
 
-        return [$token, self::OPTION_TYPE_ARGUMENT];
+        return [$token, TypeEnum::ARGUMENT];
     }
 
 
@@ -821,11 +819,11 @@ class Command implements \ArrayAccess, \Iterator
 
         $help = '';
 
-        $help .= $color(\CommandoX\Util\Terminal::header(' ' . $this->name))
+        $help .= $color(Terminal::header(' ' . $this->name))
             ->white()->bg('green')->bold() . PHP_EOL;
 
         if (!empty($this->help)) {
-            $help .= PHP_EOL . \CommandoX\Util\Terminal::wrap($this->help)
+            $help .= PHP_EOL . Terminal::wrap($this->help)
                 . PHP_EOL;
         }
 

@@ -7,6 +7,7 @@
 namespace CommandoX;
 
 use \CommandoX\Util\Terminal;
+use \CommandoX\Option\TypeEnum;
 
 /**
  * Here are all the methods available through __call.
@@ -59,13 +60,8 @@ class Option
     private $required = false; /* bool */
     private $rule = null; /* closure */
     private $title = null; /* a formal way to reference this argument */
-    private $type = 0; /* int see constants */
+    private $type = 0; /* TypeEnum */
     private $value = null; /* mixed */
-
-    public const TYPE_SHORT = 1;
-    public const TYPE_VERBOSE = 2;
-    public const TYPE_NAMED = 3; // 1|2
-    public const TYPE_ANONYMOUS = 4;
 
     /**
      * @param string|int $name single char name or int index for this option
@@ -78,9 +74,9 @@ class Option
             throw new \Exception(sprintf('Invalid option name %s: Must be identified by a single character or an integer', $name));
         }
 
-        $this->type = self::TYPE_ANONYMOUS;
+        $this->type = new TypeEnum(TypeEnum::ARGUMENT);
         if (!is_int($name)) {
-            $this->type = mb_strlen($name, 'UTF-8') === 1 ? self::TYPE_SHORT : self::TYPE_VERBOSE;
+            $this->type = new TypeEnum(mb_strlen($name, 'UTF-8') === 1 ? TypeEnum::SHORT : TypeEnum::LONG);
         }
 
         $this->name = $name;
@@ -321,12 +317,17 @@ class Option
         return $this->description;
     }
 
+    public function isNamed(): bool
+    {
+        return in_array($this->getType(), [TypeEnum::LONG, TypeEnum::SHORT]);
+    }
+
     /**
      * @return int type (see OPTION_TYPE_CONST)
      */
     public function getType(): int
     {
-        return $this->type;
+        return $this->type->value;
     }
 
     /**
@@ -451,7 +452,7 @@ class Option
     public function getHelp(): string
     {
         $color = new \Colors\Color();
-        $isNamed = $this->type & self::TYPE_NAMED;
+        $isNamed = $this->type->isNamed();
         $help = (empty($this->title) ? "arg {$this->name}" : $this->title) . PHP_EOL;
 
         if ($isNamed) {
