@@ -10,6 +10,8 @@ namespace CommandoX\Util;
  */
 class Terminal
 {
+    private static $osType = null;
+
     /**
      * Width of current terminal window
      * On Linux/Mac flavor systems, will use tput.  Falls back to a
@@ -48,6 +50,18 @@ class Terminal
     }
 
     /**
+     * Override the OS
+     *
+     * @param string $osType
+     *
+     * @return void
+     */
+    public static function setOsType(string $osType): void
+    {
+        self::$osType = $osType;
+    }
+
+    /**
      * Sadly if you attempt to redirect stderr, e.g. "tput cols 2>/dev/null"
      * tput does not return the expected values.  As a result, to prevent tput
      * from writing to stderr, we first check the exit code and call it again
@@ -61,9 +75,12 @@ class Terminal
     private static function tput($default, $param = 'cols'): int
     {
         $phpOs = strtolower(substr(PHP_OS, 0, 3));
-        $envOs = getenv('OS');
+        if (!self::$osType) {
+            self::$osType = getenv('OS');
+        }
+        $envOs = self::$osType;
         if ($phpOs === 'win' ||
-            ($envOs && strpos(strtolower($envOs), 'windows')) ||
+            ($envOs && strpos(strtolower($envOs), 'windows') !== false) ||
             empty(trim(shell_exec('which tput')))) {
             return $default;
         }

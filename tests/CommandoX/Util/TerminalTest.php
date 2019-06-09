@@ -7,24 +7,37 @@ use CommandoX\Util\Terminal;
 require_once dirname(dirname(dirname(__DIR__))) . '/vendor/autoload.php';
 
 // PHPUnit version hack https://stackoverflow.com/questions/6065730/why-fatal-error-class-phpunit-framework-testcase-not-found-in
-if (!class_exists('\PHPUnit_Framework_TestCase') && class_exists('\PHPUnit\Framework\TestCase'))
+if (!class_exists('\PHPUnit_Framework_TestCase') && class_exists('\PHPUnit\Framework\TestCase')) {
     class_alias('\PHPUnit\Framework\TestCase', '\PHPUnit_Framework_TestCase');
+}
 
 class TerminalTest extends \PHPUnit_Framework_TestCase
 {
-    public function testGetWidthWhenNoValueThenReturnsDefault() {
+    public function testTputWhenWindowsThenReturnsDefault()
+    {
+        Terminal::setOsType('windows');
+        $expected = 50;
+        $actual = Terminal::getWidth($expected);
+        Terminal::setOsType('');
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function testGetWidthWhenNoValueThenReturnsDefault()
+    {
         Terminal::beep();
         $actual = Terminal::getWidth();
-        $this->assertGreaterThan(20, $actual);
+        $this->assertGreaterThan(10, $actual);
     }
 
-    public function testGetHeightWhenNoValueThenReturnsDefault() {
+    public function testGetHeightWhenNoValueThenReturnsDefault()
+    {
         Terminal::beep();
         $actual = Terminal::getHeight();
-        $this->assertGreaterThan(20, $actual);
+        $this->assertGreaterThan(10, $actual);
     }
 
-    public function testHeaderReturnsPaddedString() {
+    public function testHeaderReturnsPaddedString()
+    {
         $expected = 'X         ';
         $actual = Terminal::header('X', 10);
         $this->assertEquals($expected, $actual);
@@ -32,13 +45,15 @@ class TerminalTest extends \PHPUnit_Framework_TestCase
         $this->assertGreaterThan(strlen($expected), strlen($actualNoWidth));
     }
 
-    public function testWrapReturnsWrappedString() {
+    public function testWrapReturnsWrappedString()
+    {
         $expected = '          X';
         $actual = Terminal::wrap('X', 10);
         $this->assertEquals($expected, $actual);
     }
 
-    public function testPadReturnsPaddedString() {
+    public function testPadReturnsPaddedString()
+    {
         $expected = 'X         ';
         $actual = Terminal::pad('X', 10);
         $this->assertEquals($expected, $actual);

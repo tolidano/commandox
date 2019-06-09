@@ -75,6 +75,8 @@ class CommandTest extends \PHPUnit_Framework_TestCase
         $cmd = new Command($tokens);
         $cmd->option('f');
         $this->assertEquals($tokens[3], $cmd[0]);
+        $opts = $cmd->getOptions();
+        $this->assertEquals(4, count($opts)); // --help, -h, -f, and arg
 
         // Define flag with `flag` and a named argument
         $tokens = ['filename', '-f', 'val', 'arg1'];
@@ -82,6 +84,10 @@ class CommandTest extends \PHPUnit_Framework_TestCase
         $cmd->flag('f')->argument();
         $this->assertEquals($tokens[3], $cmd[0]);
         $this->assertEquals($tokens[2], $cmd['f']);
+        $flags = $cmd->getFlags();
+        $args = $cmd->getArguments();
+        $this->assertEquals(3, count($flags)); // --help, -h, and -f
+        $this->assertEquals(1, count($args)); // just one
     }
 
     public function testImplicitAndExplicitParse()
