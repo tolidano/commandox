@@ -34,7 +34,7 @@ If you're new to Composer...
 Here is an example of a PHP CommandoX script that gives a decent tour of CommandoX's features:
 
 ``` php
-<?php declare(strict_types = 1);
+<?php
 
 require_once 'vendor/autoload.php';
 

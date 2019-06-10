@@ -1,4 +1,4 @@
-<?php declare(strict_types = 1);
+<?php
 /**
  * @author Shawn Tolidano <shawn@tolidano.com>
  */
@@ -46,7 +46,7 @@ abstract class Enum
      *
      * @return array
      */
-    private static function getConstants(): array
+    private static function getConstants()
     {
         if (self::$constCacheArray == null) {
             self::$constCacheArray = [];
@@ -64,7 +64,7 @@ abstract class Enum
      * @param mixed $value
      * @return boolean
      */
-    public static function isValidValue(/* mixed */ $value): bool
+    public static function isValidValue(/* mixed */ $value)
     {
         $values = array_values(self::getConstants());
         return in_array($value, $values);

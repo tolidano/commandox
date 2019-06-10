@@ -1,4 +1,4 @@
-<?php declare(strict_types = 1);
+<?php
 
 namespace CommandoX\Test;
 
@@ -7,8 +7,9 @@ use CommandoX\Option;
 require_once dirname(dirname(__DIR__)) . '/vendor/autoload.php';
 
 // PHPUnit version hack https://stackoverflow.com/questions/6065730/why-fatal-error-class-phpunit-framework-testcase-not-found-in
-if (!class_exists('\PHPUnit_Framework_TestCase') && class_exists('\PHPUnit\Framework\TestCase'))
+if (!class_exists('\PHPUnit_Framework_TestCase') && class_exists('\PHPUnit\Framework\TestCase')) {
     class_alias('\PHPUnit\Framework\TestCase', '\PHPUnit_Framework_TestCase');
+}
 
 class OptionTest extends \PHPUnit_Framework_TestCase
 {
@@ -82,7 +83,7 @@ class OptionTest extends \PHPUnit_Framework_TestCase
     public function testMap($val)
     {
         $option = new Option('f');
-        $option->setMap(function($value) {
+        $option->setMap(function ($value) {
             return $value . $value;
         });
 
@@ -98,7 +99,7 @@ class OptionTest extends \PHPUnit_Framework_TestCase
     public function testRuleValidate()
     {
         $option = new Option('f');
-        $option->setRule(function($value) {
+        $option->setRule(function ($value) {
             return is_numeric($value);
         });
 
@@ -112,11 +113,12 @@ class OptionTest extends \PHPUnit_Framework_TestCase
     /**
      * Test that an exception is thrown when set value does not validate
      */
-    public function testRuleSetValueFailingValidationThenThrowsException() {
+    public function testRuleSetValueFailingValidationThenThrowsException()
+    {
         $this->expectException(\Exception::class);
 
         $option = new Option('f');
-        $option->setRule(function($value) {
+        $option->setRule(function ($value) {
             return is_numeric($value);
         });
         $option->setValue('abc');
@@ -267,7 +269,7 @@ class OptionTest extends \PHPUnit_Framework_TestCase
     public function testConstructWhenNoNameThenThrowsException()
     {
         $this->expectException(\Exception::class);
-        $option = new Option(null);
+        new Option(null);
     }
 
     /**

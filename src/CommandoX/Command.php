@@ -1,4 +1,4 @@
-<?php declare(strict_types = 1);
+<?php
 /**
  * @author Shawn Tolidano <shawn@tolidano.com>
  * @author Nate Good <me@nategood.com>
@@ -183,7 +183,7 @@ class Command implements \ArrayAccess, \Iterator
      * @return Command
      * @throws \Exception
      */
-    public function __call(string $name, array $arguments): Command
+    public function __call($name, array $arguments)
     {
         if (empty(self::$methods[$name])) {
             throw new \Exception(sprintf('Unknown function, %s, called', $name));
@@ -210,7 +210,7 @@ class Command implements \ArrayAccess, \Iterator
      *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    private function _option(?Option $option, string $name = null)
+    private function _option($option, $name = null)
     {
         // Is this a previously declared option?
         if (isset($name) && !empty($this->options[$name])) {
@@ -235,7 +235,7 @@ class Command implements \ArrayAccess, \Iterator
      *
      * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
      */
-    private function _flag(?Option $option, string $name): Option
+    private function _flag($option, $name)
     {
         if (is_numeric($name)) {
             throw new \Exception('Attempted to reference flag with a numeric index');
@@ -254,7 +254,7 @@ class Command implements \ArrayAccess, \Iterator
      *
      * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
      */
-    private function _argument(?Option $option, ?int $index = null): Option
+    private function _argument($option, $index = null)
     {
         if (isset($index) && !is_numeric($index)) {
             throw new \Exception('Attempted to reference argument with a string name');
@@ -271,7 +271,7 @@ class Command implements \ArrayAccess, \Iterator
      *
      * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
      */
-    private function _boolean(Option $option, bool $boolean = true): Option
+    private function _boolean($option, $boolean = true)
     {
         return $option->setBoolean($boolean);
     }
