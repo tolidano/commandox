@@ -285,7 +285,7 @@ class Command implements \ArrayAccess, \Iterator
      *
      * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
      */
-    private function _require(Option $option, bool $require = true): Option
+    private function _require($option, $require = true)
     {
         return $option->setRequired($require);
     }
@@ -299,7 +299,7 @@ class Command implements \ArrayAccess, \Iterator
      *
      * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
      */
-    private function _needs(Option $option, string $name): Option
+    private function _needs($option, $name)
     {
         return $option->setNeeds($name);
     }
@@ -313,7 +313,7 @@ class Command implements \ArrayAccess, \Iterator
      *
      * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
      */
-    private function _alias(Option $option, string $alias): Option
+    private function _alias($option, $alias)
     {
         $this->options[$alias] = $this->currentOption;
         return $option->addAlias($alias);
@@ -328,7 +328,7 @@ class Command implements \ArrayAccess, \Iterator
      *
      * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
      */
-    private function _describe(Option $option, string $description): Option
+    private function _describe($option, $description)
     {
         return $option->setDescription($description);
     }
@@ -342,7 +342,7 @@ class Command implements \ArrayAccess, \Iterator
      *
      * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
      */
-    private function _title(Option $option, string $title): Option
+    private function _title($option, $title)
     {
         return $option->setTitle($title);
     }
@@ -356,7 +356,7 @@ class Command implements \ArrayAccess, \Iterator
      *
      * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
      */
-    private function _must(Option $option, \Closure $callback): Option
+    private function _must($option, \Closure $callback)
     {
         return $option->setRule($callback);
     }
@@ -370,7 +370,7 @@ class Command implements \ArrayAccess, \Iterator
      *
      * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
      */
-    private function _map(Option $option, \Closure $callback): Option
+    private function _map($option, \Closure $callback)
     {
         return $option->setMap($callback);
     }
@@ -385,7 +385,7 @@ class Command implements \ArrayAccess, \Iterator
      *
      * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
      */
-    private function _increment(Option $option, int $max = 0): Option
+    private function _increment($option, $max = 0)
     {
         return $option->setIncrement($max);
     }
@@ -400,7 +400,7 @@ class Command implements \ArrayAccess, \Iterator
      *
      * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
      */
-    private function _default(Option $option, /* mixed */ $value): Option
+    private function _default($option, /* mixed */ $value)
     {
         return $option->setDefault($value);
     }
@@ -413,7 +413,7 @@ class Command implements \ArrayAccess, \Iterator
      *
      * @SuppressWarnings(PHPMD.UnusedPrivateMethod)
      */
-    private function _file(Option $option, bool $requireExists = true, bool $allowGlobbing = false): Option
+    private function _file($option, $requireExists = true, $allowGlobbing = false)
     {
         return $option->setFileRequirements($requireExists, $allowGlobbing);
     }
@@ -423,7 +423,7 @@ class Command implements \ArrayAccess, \Iterator
      *
      * @param bool $help
      */
-    public function useDefaultHelp(bool $help = true)
+    public function useDefaultHelp($help = true)
     {
         $this->defaultHelp = $help;
     }
@@ -435,7 +435,7 @@ class Command implements \ArrayAccess, \Iterator
      * @param array $cli_tokens
      * @return Command
      */
-    public function setTokens(array $cli_tokens): Command
+    public function setTokens(array $cli_tokens)
     {
         $this->tokens = $cli_tokens;
         return $this;
@@ -447,7 +447,7 @@ class Command implements \ArrayAccess, \Iterator
      * @throws \Exception
      * @return int
      */
-    private function parseIfNotParsed(): int
+    private function parseIfNotParsed()
     {
         if ($this->isParsed()) {
             return 0;
@@ -461,7 +461,7 @@ class Command implements \ArrayAccess, \Iterator
      * @throws \Exception
      * @return int
      */
-    public function parse(): int
+    public function parse()
     {
         $this->parsed = true;
         $this->attachHelp();
@@ -586,7 +586,7 @@ class Command implements \ArrayAccess, \Iterator
      * @throws \Exception
      * @return int exit code
      */
-    public function error(\Exception $exception): int
+    public function error($exception)
     {
         if ($this->errorBeep === true) {
             Terminal::beep();
@@ -606,7 +606,7 @@ class Command implements \ArrayAccess, \Iterator
      * @param string $message
      * @return string
      */
-    public function createTerminalError(string $message)
+    public function createTerminalError($message)
     {
         $color = new \Colors\Color();
         $error = sprintf('ERROR: %s ', $message);
@@ -618,7 +618,7 @@ class Command implements \ArrayAccess, \Iterator
      *
      * @return bool
      */
-    public function isParsed(): bool
+    public function isParsed()
     {
         return $this->parsed;
     }
@@ -629,7 +629,7 @@ class Command implements \ArrayAccess, \Iterator
      * @throws \Exception
      * @return array [option name/value, OPTION_TYPE_*]
      */
-    private function _parseOption($token): array
+    private function _parseOption($token)
     {
         $matches = [];
         if (substr($token, 0, 1) === '-' && !preg_match('/(?P<hyphen>\-{1,2})(?P<name>[a-z][a-z0-9_-]*)/i', $token, $matches)) {
@@ -967,7 +967,7 @@ class Command implements \ArrayAccess, \Iterator
      * @see \Iterator
      * @return bool
      */
-    public function valid(): bool
+    public function valid()
     {
         return isset($this->sorted_keys[$this->position]);
     }
