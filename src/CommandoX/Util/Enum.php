@@ -33,7 +33,7 @@ abstract class Enum
      * @param string $name
      * @return void
      */
-    public function __get(string $name)
+    public function __get($name)
     {
         if ($name === 'value') {
             return $this->value;
