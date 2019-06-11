@@ -7,10 +7,6 @@ before_script:
   - cd tests
 matrix:
   include:
-    - php: 5.2
-      dist: precise
-    - php: 5.3
-      dist: precise
     - php: 5.4
       dist: trusty
     - php: 5.5
@@ -20,4 +16,6 @@ matrix:
     - php: 7.0
       dist: xenial
     - php: 7.1
+      dist: xenial
+    - php: 7.2
       dist: xenial
