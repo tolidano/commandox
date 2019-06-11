@@ -13,9 +13,9 @@ use \CommandoX\Util\Enum;
  */
 class TypeEnum extends Enum
 {
-    public const SHORT = 1;
-    public const LONG = 2;
-    public const ARGUMENT = 4;
+    const SHORT = 1;
+    const LONG = 2;
+    const ARGUMENT = 4;
 
   /**
    * Convenience method

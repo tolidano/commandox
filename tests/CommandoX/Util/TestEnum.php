@@ -13,5 +13,5 @@ use \CommandoX\Util\Enum;
  */
 class TestEnum extends Enum
 {
-    public const TEST = 1;
+    const TEST = 1;
 }
