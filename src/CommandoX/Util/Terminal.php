@@ -79,9 +79,10 @@ class Terminal
             self::$osType = getenv('OS');
         }
         $envOs = self::$osType;
+        $whichTput = shell_exec('which tput');
         if ($phpOs === 'win' ||
             ($envOs && strpos(strtolower($envOs), 'windows') !== false) ||
-            empty(trim(shell_exec('which tput')))) {
+            empty(trim($whichTput))) {
             return $default;
         }
         $test = exec('tput ' . $param . ' 2>/dev/null');

@@ -286,8 +286,8 @@ class CommandTest extends \PHPUnit_Framework_TestCase
         $cmd->setHelp($extraHelp);
         $help = $cmd->getHelp();
         $testHelp = '--help';
-        $this->assertIsInt(strpos($help, $testHelp));
-        $this->assertIsInt(strpos($help, $extraHelp));
+        $this->assertGreaterThan(0, strpos($help, $testHelp));
+        $this->assertGreaterThan(0, strpos($help, $extraHelp));
     }
 
     /**
@@ -365,7 +365,7 @@ class CommandTest extends \PHPUnit_Framework_TestCase
         $tokens = [$scriptName, 'test'];
         $cmd = new Command($tokens);
         $help = 'TO STRING ' . $cmd;
-        $this->assertIsInt(strpos($help, $scriptName));
+        $this->assertGreaterThan(0, strpos($help, $scriptName));
     }
 
     /**
