@@ -255,11 +255,11 @@ class OptionTest extends \PHPUnit_Framework_TestCase
                ->setDefault($testDefault);
         $help = 'TO STRING ' . $option;
 
-        $this->assertIsInt(strpos($help, $testTitle));
-        $this->assertIsInt(strpos($help, $testAlias));
-        $this->assertIsInt(strpos($help, $testDescription));
-        $this->assertIsInt(strpos($help, $testRequired));
-        $this->assertIsInt(strpos($help, $testDefault));
+        $this->assertGreaterThan(0, strpos($help, $testTitle));
+        $this->assertGreaterThan(0, strpos($help, $testAlias));
+        $this->assertGreaterThan(0, strpos($help, $testDescription));
+        $this->assertGreaterThan(0, strpos($help, $testRequired));
+        $this->assertGreaterThan(0, strpos($help, $testDefault));
     }
 
     /**

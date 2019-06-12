@@ -82,15 +82,15 @@ class Terminal
         $whichTput = shell_exec('which tput');
         if ($phpOs === 'win' ||
             ($envOs && strpos(strtolower($envOs), 'windows') !== false) ||
-            empty(trim($whichTput))) {
+            !trim($whichTput)) {
             return $default;
         }
         $test = exec('tput ' . $param . ' 2>/dev/null');
-        if (empty($test)) {
+        if (!$test) {
             return $default;
         }
         $result = intval(exec('tput ' . $param));
-        return empty($result) ? $default : $result;
+        return !$result ? $default : $result;
     }
 
     /**
