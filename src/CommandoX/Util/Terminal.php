@@ -56,7 +56,7 @@ class Terminal
      *
      * @return void
      */
-    public static function setOsType(string $osType)
+    public static function setOsType($osType)
     {
         self::$osType = $osType;
     }
