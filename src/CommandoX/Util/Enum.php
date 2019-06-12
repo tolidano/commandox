@@ -21,7 +21,7 @@ abstract class Enum
     public function __construct(/* mixed */ $value)
     {
         if (!self::isValidValue($value)) {
-            $name = static::class;
+            $name = get_called_class();
             throw new \Exception("Invalid value $value for enum $name");
         }
         $this->value = $value;
@@ -51,11 +51,12 @@ abstract class Enum
         if (self::$constCacheArray == null) {
             self::$constCacheArray = [];
         }
-        if (!array_key_exists(static::class, self::$constCacheArray)) {
-            $reflect = new \ReflectionClass(static::class);
-            self::$constCacheArray[static::class] = $reflect->getConstants();
+        $calledClass = get_called_class();
+        if (!array_key_exists($calledClass, self::$constCacheArray)) {
+            $reflect = new \ReflectionClass($calledClass);
+            self::$constCacheArray[$calledClass] = $reflect->getConstants();
         }
-        return self::$constCacheArray[static::class];
+        return self::$constCacheArray[$calledClass];
     }
 
     /**
