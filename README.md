@@ -1,5 +1,5 @@
 # CommandoX
-## PHP 7.2+ CLI Manager
+## PHP 5.4-7.1 CLI Manager
 
 [![Build Status](https://secure.travis-ci.org/tolidano/commandox.png?branch=master)](http://travis-ci.org/tolidano/commandox)
 
