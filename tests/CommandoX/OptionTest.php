@@ -112,11 +112,12 @@ class OptionTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test that an exception is thrown when set value does not validate
+     *
+     * @expectedException \Exception
+     * @test
      */
     public function testRuleSetValueFailingValidationThenThrowsException()
     {
-        $this->expectException(\Exception::class);
-
         $option = new Option('f');
         $option->setRule(function ($value) {
             return is_numeric($value);
@@ -169,11 +170,11 @@ class OptionTest extends \PHPUnit_Framework_TestCase
     /**
      * Test empty globs throw exception
      *
+     * @expectedException \Exception
      * @test
      */
     public function testFileGlobWhenEmptyThenThrows()
     {
-        $this->expectException(\Exception::class);
         $option = new Option(0);
         $option->setFileRequirements(true, true);
         $file = dirname(__FILE__) . '/assets/*.bad';
@@ -264,22 +265,22 @@ class OptionTest extends \PHPUnit_Framework_TestCase
     /**
      * Constructing with no parameter throws
      *
+     * @expectedException \Exception
      * @test
      */
     public function testConstructWhenNoNameThenThrowsException()
     {
-        $this->expectException(\Exception::class);
         new Option(null);
     }
 
     /**
      * Non-boolean values passed to boolean options should throw
      *
+     * @expectedException \Exception
      * @test
      */
     public function testSetValueWhenBooleanNonBooleanValueThenThrowsException()
     {
-        $this->expectException(\Exception::class);
         $option = new Option('t');
         $option->setBoolean();
         $option->setValue('x');
@@ -288,11 +289,11 @@ class OptionTest extends \PHPUnit_Framework_TestCase
     /**
      * Non-integer values passed to increment options should throw
      *
+     * @expectedException \Exception
      * @test
      */
     public function testSetValueWhenIncrementNonIntegerValueThenThrowsException()
     {
-        $this->expectException(\Exception::class);
         $option = new Option('t');
         $option->setIncrement(3);
         $option->setValue('x');
