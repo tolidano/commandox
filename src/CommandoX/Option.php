@@ -1,4 +1,4 @@
-<?php declare(strict_types = 1);
+<?php
 /**
  * @author Shawn Tolidano <shawn@tolidano.com>
  * @author Nate Good <me@nategood.com>
@@ -88,7 +88,7 @@ class Option
      * @param string $alias
      * @return Option
      */
-    public function addAlias(string $alias): Option
+    public function addAlias($alias)
     {
         $this->aliases[] = $alias;
         return $this;
@@ -100,7 +100,7 @@ class Option
      * @param string $description
      * @return Option
      */
-    public function setDescription(string $description): Option
+    public function setDescription($description)
     {
         $this->description = $description;
         return $this;
@@ -112,7 +112,7 @@ class Option
      * @param bool $bool
      * @return Option
      */
-    public function setBoolean(bool $bool = true): Option
+    public function setBoolean($bool = true)
     {
         // if we didn't define a default already, set false as the default value
         if ($this->default === null) {
@@ -128,7 +128,7 @@ class Option
      * @param int $max
      * @return Option
      */
-    public function setIncrement(int $max = 0): Option
+    public function setIncrement($max = 0)
     {
         // if we didn't define a default already, set 0 as the default value
         if ($this->default === null) {
@@ -152,7 +152,7 @@ class Option
      * @throws \Exception if the file does not exists
      * @return Option
      */
-    public function setFileRequirements(bool $requireExists = true, bool $allowGlobbing = true): Option
+    public function setFileRequirements($requireExists = true, $allowGlobbing = true)
     {
         $this->file = true;
         $this->fileRequireExists = $requireExists;
@@ -166,7 +166,7 @@ class Option
      * @param string $title
      * @return Option
      */
-    public function setTitle(string $title): Option
+    public function setTitle($title)
     {
         $this->title = $title;
         return $this;
@@ -178,7 +178,7 @@ class Option
      * @param bool $bool required?
      * @return Option
      */
-    public function setRequired(bool $bool = true): Option
+    public function setRequired($bool = true)
     {
         $this->required = $bool;
         return $this;
@@ -190,7 +190,7 @@ class Option
      * @param string $option Option name
      * @return Option
      */
-    public function setNeeds(string $option): Option
+    public function setNeeds($option)
     {
         if (!is_array($option)) {
             $option = [$option];
@@ -208,7 +208,7 @@ class Option
      * @param mixed $value default value
      * @return Option
      */
-    public function setDefault(/* mixed */ $value): Option
+    public function setDefault(/* mixed */ $value)
     {
         $this->default = $value;
         $this->setValue($value);
@@ -227,7 +227,7 @@ class Option
      * @param \Closure|string $rule regex, closure
      * @return Option
      */
-    public function setRule(/* mixed */ $rule): Option
+    public function setRule(/* mixed */ $rule)
     {
         $this->rule = $rule;
         return $this;
@@ -237,7 +237,7 @@ class Option
      * @param \Closure $map
      * @return Option
      */
-    public function setMap(\Closure $map): Option
+    public function setMap(\Closure $map)
     {
         $this->map = $map;
         return $this;
@@ -266,7 +266,7 @@ class Option
      * @param mixed $value
      * @return bool
      */
-    public function validate(/* mixed */ $value): bool
+    public function validate(/* mixed */ $value)
     {
         if (!is_callable($this->rule)) {
             return true;
@@ -285,7 +285,7 @@ class Option
      * @return array single element array of full file path
      *      or an array of file paths if "globbing" is supported
      */
-    public function parseFilePath(string $filePath): array
+    public function parseFilePath($filePath)
     {
         $path = realpath($filePath);
         if ($this->fileAllowGlobbing) {
@@ -312,12 +312,12 @@ class Option
     /**
      * @return string description of the option
      */
-    public function getDescription(): string
+    public function getDescription()
     {
         return $this->description;
     }
 
-    public function isNamed(): bool
+    public function isNamed()
     {
         return in_array($this->getType(), [TypeEnum::LONG, TypeEnum::SHORT]);
     }
@@ -325,7 +325,7 @@ class Option
     /**
      * @return int type (see OPTION_TYPE_CONST)
      */
-    public function getType(): int
+    public function getType()
     {
         return $this->type->value;
     }
@@ -341,7 +341,7 @@ class Option
     /**
      * @return string[] list of aliases
      */
-    public function getAliases(): array
+    public function getAliases()
     {
         return $this->aliases;
     }
@@ -351,7 +351,7 @@ class Option
      *
      * @return string[] List of required options
      */
-    public function getNeeds(): array
+    public function getNeeds()
     {
         return $this->needs;
     }
@@ -359,7 +359,7 @@ class Option
     /**
      * @return bool is this option a boolean
      */
-    public function isBoolean(): bool
+    public function isBoolean()
     {
         return $this->boolean;
     }
@@ -367,7 +367,7 @@ class Option
     /**
      * @return bool is this option an incremental option
      */
-    public function isIncrement(): bool
+    public function isIncrement()
     {
         return $this->increment;
     }
@@ -375,7 +375,7 @@ class Option
     /**
      * @return bool is this option a boolean
      */
-    public function isFile(): bool
+    public function isFile()
     {
         return $this->file;
     }
@@ -383,7 +383,7 @@ class Option
     /**
      * @return bool is this option required?
      */
-    public function isRequired(): bool
+    public function isRequired()
     {
         return $this->required;
     }
@@ -449,7 +449,7 @@ class Option
      *
      * @return string
      */
-    public function getHelp(): string
+    public function getHelp()
     {
         $color = new \Colors\Color();
         $isNamed = $this->type->isNamed();
@@ -507,7 +507,7 @@ class Option
     /**
      * @return string
      */
-    public function __toString(): string
+    public function __toString()
     {
         return $this->getHelp();
     }

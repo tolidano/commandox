@@ -1,4 +1,4 @@
-<?php declare(strict_types = 1);
+<?php
 /**
  * TypeEnum Definition
  */
@@ -13,9 +13,9 @@ use \CommandoX\Util\Enum;
  */
 class TypeEnum extends Enum
 {
-    public const SHORT = 1;
-    public const LONG = 2;
-    public const ARGUMENT = 4;
+    const SHORT = 1;
+    const LONG = 2;
+    const ARGUMENT = 4;
 
   /**
    * Convenience method
@@ -24,7 +24,7 @@ class TypeEnum extends Enum
    *
    * @return bool
    */
-    public function isNamed(): bool
+    public function isNamed()
     {
         return static::isValueNamed($this->value);
     }
@@ -35,7 +35,7 @@ class TypeEnum extends Enum
    * @param mixed $value
    * @return bool
    */
-    public static function isValueNamed(/* mixed */ $value): bool
+    public static function isValueNamed(/* mixed */ $value)
     {
         return ($value === static::SHORT || $value === static::LONG);
     }

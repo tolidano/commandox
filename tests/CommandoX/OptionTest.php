@@ -1,4 +1,4 @@
-<?php declare(strict_types = 1);
+<?php
 
 namespace CommandoX\Test;
 
@@ -7,8 +7,9 @@ use CommandoX\Option;
 require_once dirname(dirname(__DIR__)) . '/vendor/autoload.php';
 
 // PHPUnit version hack https://stackoverflow.com/questions/6065730/why-fatal-error-class-phpunit-framework-testcase-not-found-in
-if (!class_exists('\PHPUnit_Framework_TestCase') && class_exists('\PHPUnit\Framework\TestCase'))
+if (!class_exists('\PHPUnit_Framework_TestCase') && class_exists('\PHPUnit\Framework\TestCase')) {
     class_alias('\PHPUnit\Framework\TestCase', '\PHPUnit_Framework_TestCase');
+}
 
 class OptionTest extends \PHPUnit_Framework_TestCase
 {
@@ -82,7 +83,7 @@ class OptionTest extends \PHPUnit_Framework_TestCase
     public function testMap($val)
     {
         $option = new Option('f');
-        $option->setMap(function($value) {
+        $option->setMap(function ($value) {
             return $value . $value;
         });
 
@@ -98,7 +99,7 @@ class OptionTest extends \PHPUnit_Framework_TestCase
     public function testRuleValidate()
     {
         $option = new Option('f');
-        $option->setRule(function($value) {
+        $option->setRule(function ($value) {
             return is_numeric($value);
         });
 
@@ -111,12 +112,14 @@ class OptionTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test that an exception is thrown when set value does not validate
+     *
+     * @expectedException \Exception
+     * @test
      */
-    public function testRuleSetValueFailingValidationThenThrowsException() {
-        $this->expectException(\Exception::class);
-
+    public function testRuleSetValueFailingValidationThenThrowsException()
+    {
         $option = new Option('f');
-        $option->setRule(function($value) {
+        $option->setRule(function ($value) {
             return is_numeric($value);
         });
         $option->setValue('abc');
@@ -167,11 +170,11 @@ class OptionTest extends \PHPUnit_Framework_TestCase
     /**
      * Test empty globs throw exception
      *
+     * @expectedException \Exception
      * @test
      */
     public function testFileGlobWhenEmptyThenThrows()
     {
-        $this->expectException(\Exception::class);
         $option = new Option(0);
         $option->setFileRequirements(true, true);
         $file = dirname(__FILE__) . '/assets/*.bad';
@@ -252,32 +255,32 @@ class OptionTest extends \PHPUnit_Framework_TestCase
                ->setDefault($testDefault);
         $help = 'TO STRING ' . $option;
 
-        $this->assertIsInt(strpos($help, $testTitle));
-        $this->assertIsInt(strpos($help, $testAlias));
-        $this->assertIsInt(strpos($help, $testDescription));
-        $this->assertIsInt(strpos($help, $testRequired));
-        $this->assertIsInt(strpos($help, $testDefault));
+        $this->assertGreaterThan(0, strpos($help, $testTitle));
+        $this->assertGreaterThan(0, strpos($help, $testAlias));
+        $this->assertGreaterThan(0, strpos($help, $testDescription));
+        $this->assertGreaterThan(0, strpos($help, $testRequired));
+        $this->assertGreaterThan(0, strpos($help, $testDefault));
     }
 
     /**
      * Constructing with no parameter throws
      *
+     * @expectedException \Exception
      * @test
      */
     public function testConstructWhenNoNameThenThrowsException()
     {
-        $this->expectException(\Exception::class);
-        $option = new Option(null);
+        new Option(null);
     }
 
     /**
      * Non-boolean values passed to boolean options should throw
      *
+     * @expectedException \Exception
      * @test
      */
     public function testSetValueWhenBooleanNonBooleanValueThenThrowsException()
     {
-        $this->expectException(\Exception::class);
         $option = new Option('t');
         $option->setBoolean();
         $option->setValue('x');
@@ -286,11 +289,11 @@ class OptionTest extends \PHPUnit_Framework_TestCase
     /**
      * Non-integer values passed to increment options should throw
      *
+     * @expectedException \Exception
      * @test
      */
     public function testSetValueWhenIncrementNonIntegerValueThenThrowsException()
     {
-        $this->expectException(\Exception::class);
         $option = new Option('t');
         $option->setIncrement(3);
         $option->setValue('x');

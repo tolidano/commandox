@@ -1,4 +1,4 @@
-<?php declare(strict_types = 1);
+<?php
 
 namespace CommandoX\Test\Util;
 
@@ -14,15 +14,25 @@ if (!class_exists('\PHPUnit_Framework_TestCase') && class_exists('\PHPUnit\Frame
 
 class EnumTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * Must be a valid enum value
+     *
+     * @expectedException \Exception
+     * @test
+     */
     public function testEnumWhenInvalidThenThrows()
     {
-        $this->expectException(\Exception::class);
         new TestEnum(2);
     }
 
+    /**
+     * Can only get value
+     *
+     * @expectedException \Exception
+     * @test
+     */
     public function testEnumWhenInvalidGetThenThrows()
     {
-        $this->expectException(\Exception::class);
         $test = new TestEnum(1);
         $test->notValue;
     }
