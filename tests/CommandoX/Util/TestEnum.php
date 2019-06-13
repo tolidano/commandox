@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 /**
  * TestEnum Definition
  */
@@ -13,5 +13,5 @@ use \CommandoX\Util\Enum;
  */
 class TestEnum extends Enum
 {
-    const TEST = 1;
+    public const TEST = 1;
 }

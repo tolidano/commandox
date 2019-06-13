@@ -1,10 +1,10 @@
 # CommandoX
-## PHP 5.4-7.1 CLI Manager
+## PHP 7.2+ CLI Manager
 
 [![Build Status](https://secure.travis-ci.org/tolidano/commandox.png?branch=master)](http://travis-ci.org/tolidano/commandox)
 
 CommandoX is a PHP command line interface library that beautifies and simplifies writing PHP scripts intended for command line use.
-This is a PHP 5.4-7.1 port of Nate Good's abandoned Commando project available here: (https://www.github.com/nategood/commando)
+This is a PHP 7.2+ port of Nate Good's abandoned Commando project available here: (https://www.github.com/nategood/commando)
 
 ## Why?
 
@@ -13,7 +13,7 @@ PHP's [`getopt`](http://php.net/manual/en/function.getopt.php) is not a signific
 
 ## Installation
 
-*CommandoX requires that you are running PHP 5.4 - PHP 7.1.*
+*CommandoX requires that you are running PHP 7.2 or higher.*
 
 CommandoX is [PSR-0](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-0.md) compliant and can be installed using [Composer](http://getcomposer.org/).  Add `tolidano/commandox` to your `composer.json`
 
@@ -34,7 +34,7 @@ If you're new to Composer...
 Here is an example of a PHP CommandoX script that gives a decent tour of CommandoX's features:
 
 ``` php
-<?php
+<?php declare(strict_types = 1);
 
 require_once 'vendor/autoload.php';
 
@@ -255,7 +255,6 @@ CommandoX encourages pull requests.  When submitting a pull request:
  - Run all unit tests from the tests directory via `phpunit` (install phpunit 8+ globally with composer)
  - Include commenting where appropriate
  - Add a descriptive PR message, preferably referencing a GitHub issue
- - Only security and serious bug fixes will be accepted on the 5.4-7.1 version
 
 ## Inspiration / Original
 
@@ -267,22 +266,29 @@ Released under MIT license.
 
 ## Change Log
 
-### v0.5.0 (Multiple Breaking Changes)
+### v0.7.2 (Multiple Breaking Changes)
 
- - Upgrade to PHP 5.4, support up to 7.1
- - remove PHP 5.3 from travis CI yaml / testing
- - add didShowHelp method
- - remove all die/exit statements, return valid exit codes instead
- - Port to new packagist under tolidano/commandox
- - Port to new GitHub repository under tolidano/commandox
- - Correct dedupeFlags bug (ensures each option/alias is seen exactly once)
- - Use title in help and error messages when defined for anonymous arguments
- - Constant refactoring
- - Omit `<argument>` for increment options help text
- - Fix non-empty getArgumentValues array
- - Allow subclassing of Command
- - Make tput OS-aware
- - Help now works with -h as well (conflicts with existing -h flags)
+- Minimum version is now PHP 7.2
+- Remove all PHP versions before 7.2 from travis CI yaml / testing
+- Upgrade testing to PHPUnit 8 standards
+- Add method parameter and return type hints
+
+### v0.5.4 (Multiple Breaking Changes)
+
+- Upgrade to PHP 5.4, support up to 7.1
+- remove PHP 5.3 from travis CI yaml / testing
+- add didShowHelp method
+- remove all die/exit statements, return valid exit codes instead
+- Port to new packagist under tolidano/commandox
+- Port to new GitHub repository under tolidano/commandox
+- Correct dedupeFlags bug (ensures each option/alias is seen exactly once)
+- Use title in help and error messages when defined for anonymous arguments
+- Constant refactoring
+- Omit <argument> for increment options help text
+- Fix non-empty getArgumentValues array
+- Allow subclassing of Command
+- Make tput OS-aware
+- Help now works with -h as well (conflicts with existing -h flags)
 
 ### v0.2.9
 

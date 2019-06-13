@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 /**
  * @author Shawn Tolidano <shawn@tolidano.com>
  * @author Nate Good <me@nategood.com>
@@ -21,7 +21,7 @@ class Terminal
      * @param  int $default
      * @return int
      */
-    public static function getWidth($default = 80)
+    public static function getWidth($default = 80): int
     {
         return self::tput($default, 'cols');
     }
@@ -34,7 +34,7 @@ class Terminal
      * @param  int $default
      * @return int
      */
-    public static function getHeight($default = 32)
+    public static function getHeight($default = 32): int
     {
         return self::tput($default, 'lines');
     }
@@ -44,7 +44,7 @@ class Terminal
      *
      * @return void
      */
-    public static function beep()
+    public static function beep(): void
     {
         print('\x7');
     }
@@ -56,7 +56,7 @@ class Terminal
      *
      * @return void
      */
-    public static function setOsType($osType)
+    public static function setOsType(string $osType): void
     {
         self::$osType = $osType;
     }
@@ -72,25 +72,24 @@ class Terminal
      * @param  string $param
      * @return int
      */
-    private static function tput($default, $param = 'cols')
+    private static function tput($default, $param = 'cols'): int
     {
         $phpOs = strtolower(substr(PHP_OS, 0, 3));
         if (!self::$osType) {
             self::$osType = getenv('OS');
         }
         $envOs = self::$osType;
-        $whichTput = shell_exec('which tput');
         if ($phpOs === 'win' ||
             ($envOs && strpos(strtolower($envOs), 'windows') !== false) ||
-            !trim($whichTput)) {
+            empty(trim(shell_exec('which tput')))) {
             return $default;
         }
         $test = exec('tput ' . $param . ' 2>/dev/null');
-        if (!$test) {
+        if (empty($test)) {
             return $default;
         }
         $result = intval(exec('tput ' . $param));
-        return !$result ? $default : $result;
+        return empty($result) ? $default : $result;
     }
 
     /**
@@ -102,8 +101,12 @@ class Terminal
      * @param  ?int   $width        attempts to use current terminal width by default
      * @return string
      */
-    public static function wrap($text, $leftMargin = 0, $rightMargin = 0, $width = null)
-    {
+    public static function wrap(
+        string $text,
+        int $leftMargin = 0,
+        int $rightMargin = 0,
+        ?int $width = null
+    ): string {
         if (empty($width)) {
             $width = self::getWidth();
         }
@@ -119,7 +122,7 @@ class Terminal
      * @param  int    $width defaults to terminal width
      * @return string
      */
-    public static function header($text, $width = null)
+    public static function header(string $text, ?int $width = null): string
     {
         if (empty($width)) {
             $width = self::getWidth();
@@ -137,8 +140,12 @@ class Terminal
      *
      * @return string
      */
-    public static function pad($text, $width, $pad = ' ', $mode = STR_PAD_RIGHT)
-    {
+    public static function pad(
+        string $text,
+        int $width,
+        string $pad = ' ',
+        int $mode = STR_PAD_RIGHT
+    ): string {
         $width = strlen($text) - mb_strlen($text, 'UTF-8') + $width;
         return str_pad($text, $width, $pad, $mode);
     }

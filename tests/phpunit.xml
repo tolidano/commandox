@@ -1,11 +1,4 @@
-<phpunit backupGlobals="false"
-         backupStaticAttributes="false"
-         colors="true"
-         convertErrorsToExceptions="true"
-         convertNoticesToExceptions="false"
-         convertWarningsToExceptions="false"
-         processIsolation="false"
-         stopOnFailure="false">
+<phpunit>
     <testsuite name="CommandoX">
         <directory suffix=".php">.</directory>
     </testsuite>
