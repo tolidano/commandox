@@ -1,4 +1,4 @@
-<?php declare(strict_types = 1);
+<?php
 
 namespace CommandoX\Test;
 
@@ -121,9 +121,14 @@ class CommandTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(1, $cmd->getSize());
     }
 
+    /**
+     * Must have required arguments
+     *
+     * @expectedException \Exception
+     * @test
+     */
     public function testWhenRequiredArgumentNotPassedThenThrows()
     {
-        $this->expectException(\Exception::class);
         $tokens = ['filename'];
         $cmd = new Command($tokens);
         $cmd->doNotTrapErrors();
@@ -230,11 +235,12 @@ class CommandTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test that an exception is thrown when an option isn't set
+     *
+     * @expectedException \InvalidArgumentException
+     * @test
      */
     public function testRequirementsOnOptionsMissing()
     {
-        $this->expectException(\InvalidArgumentException::class);
-
         $tokens = ['filename', '-a', 'v1'];
         $cmd = new Command($tokens);
 
@@ -280,8 +286,8 @@ class CommandTest extends \PHPUnit_Framework_TestCase
         $cmd->setHelp($extraHelp);
         $help = $cmd->getHelp();
         $testHelp = '--help';
-        $this->assertIsInt(strpos($help, $testHelp));
-        $this->assertIsInt(strpos($help, $extraHelp));
+        $this->assertGreaterThan(0, strpos($help, $testHelp));
+        $this->assertGreaterThan(0, strpos($help, $extraHelp));
     }
 
     /**
@@ -321,11 +327,11 @@ class CommandTest extends \PHPUnit_Framework_TestCase
     /**
      * Test for unknown methods
      *
+     * @expectedException \Exception
      * @test
      */
     public function testCommandWhenMethodNotDefinedThenThrows()
     {
-        $this->expectException(\Exception::class);
         $tokens = ['filename'];
         $cmd = new Command($tokens);
         $cmd->nonexistentMethod();
@@ -359,15 +365,17 @@ class CommandTest extends \PHPUnit_Framework_TestCase
         $tokens = [$scriptName, 'test'];
         $cmd = new Command($tokens);
         $help = 'TO STRING ' . $cmd;
-        $this->assertIsInt(strpos($help, $scriptName));
+        $this->assertGreaterThan(0, strpos($help, $scriptName));
     }
 
     /**
      * Test array interface throws on set
+     *
+     * @expectedException \Exception
+     * @test
      */
     public function testWhenSetOnArrayThenThrows()
     {
-        $this->expectException(\Exception::class);
         $tokens = ['filename'];
         $cmd = new Command($tokens);
         $cmd[0] = 'test';
@@ -376,11 +384,11 @@ class CommandTest extends \PHPUnit_Framework_TestCase
     /**
      * Test malformed arguments while errors are not trapped
      *
+     * @expectedException \Exception
      * @test
      */
     public function testWhenMalformedArgumentAndTrapFalseThenThrows()
     {
-        $this->expectException(\Exception::class);
         $tokens = ['filename', '-*test'];
         $cmd = new Command($tokens);
         $cmd->doNotTrapErrors();
